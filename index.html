@@ -72,49 +72,54 @@ html{scroll-behavior:smooth;}
 body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;transition:background .25s,color .25s;font-size:15px;}
 
 /* ── HEADER ── */
-header{background:var(--navy);padding:0 24px;position:sticky;top:0;z-index:100;}
-.hdr{max-width:1160px;margin:0 auto;height:58px;display:flex;align-items:center;justify-content:space-between;}
-.logo{font-family:'Instrument Serif',Georgia,serif;font-size:1.35rem;font-weight:400;color:#fff;text-decoration:none;letter-spacing:.01em;}
+header{background:var(--navy);padding:0 16px;position:sticky;top:0;z-index:100;}
+.hdr{max-width:1160px;margin:0 auto;height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.logo{font-family:'Instrument Serif',Georgia,serif;font-size:1.25rem;font-weight:400;color:#fff;text-decoration:none;letter-spacing:.01em;flex-shrink:0;}
 .logo em{color:#a8c4f0;font-style:normal;}
-.hdr-right{display:flex;align-items:center;gap:6px;}
-.theme-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:4px 10px;font-size:.72rem;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.02em;}
+.hdr-right{display:flex;align-items:center;gap:5px;}
+.theme-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:4px 8px;font-size:.68rem;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:.02em;}
 .theme-btn:hover{background:rgba(255,255,255,.14);color:rgba(255,255,255,.85);}
 .theme-btn.active{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:#fff;}
+@media(max-width:400px){.theme-btn{padding:3px 6px;font-size:.62rem;}}
 
 /* ── HERO ── */
-.hero{background:var(--navy);padding:48px 24px 52px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);}
-.hero-eyebrow{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a8c4f0;margin-bottom:14px;}
-.hero h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.9rem,4vw,2.9rem);font-weight:400;color:#ffffff;line-height:1.15;letter-spacing:-.01em;margin-bottom:14px;}
+.hero{background:var(--navy);padding:36px 16px 40px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);}
+.hero-eyebrow{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a8c4f0;margin-bottom:12px;}
+.hero h1{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.6rem,5vw,2.9rem);font-weight:400;color:#ffffff;line-height:1.15;letter-spacing:-.01em;margin-bottom:12px;}
 .hero h1 em{color:#a8c4f0;font-style:italic;}
-.hero p{color:rgba(255,255,255,.55);font-size:.92rem;max-width:500px;margin:0 auto 24px;line-height:1.7;}
-.hero-features{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;}
-.hf{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.45);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:4px 12px;border-radius:20px;letter-spacing:.02em;}
+.hero p{color:rgba(255,255,255,.55);font-size:.88rem;max-width:500px;margin:0 auto 20px;line-height:1.7;}
+.hero-features{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;}
+.hf{font-size:.7rem;font-weight:500;color:rgba(255,255,255,.45);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:3px 10px;border-radius:20px;letter-spacing:.02em;}
 
 /* ── PLATFORM SELECTOR ── */
-.platform-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;transition:background .25s;}
-.platform-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:0;height:52px;}
-.platform-label{font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:16px;white-space:nowrap;}
-.plat-btn{display:flex;align-items:center;gap:7px;padding:6px 16px;border-radius:8px;border:1.5px solid transparent;background:none;font-family:inherit;font-size:.83rem;font-weight:500;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.platform-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;transition:background .25s;}
+.platform-inner{max-width:1160px;margin:0 auto;display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:10px 0;}
+.platform-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:8px;white-space:nowrap;}
+.plat-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;border:1.5px solid transparent;background:none;font-family:inherit;font-size:.8rem;font-weight:500;color:var(--sub);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .plat-btn:hover{background:var(--surface2);color:var(--text);}
 .plat-btn.active{background:var(--blue-lt);border-color:var(--blue-border);color:var(--blue);}
-.plat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.plat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .dot-airbnb{background:#ff5a5f;}
 .dot-vrbo{background:#1c5bd4;}
 .dot-direct{background:#16a34a;}
+.plat-fee-hint{display:none;}
+@media(max-width:480px){.platform-label{width:100%;margin-bottom:2px;} .plat-btn{font-size:.75rem;padding:5px 10px;}}
 
 /* ── MAIN LAYOUT ── */
-.page{max-width:1160px;margin:0 auto;padding:24px 16px 100px;display:grid;grid-template-columns:1fr 1fr 380px;gap:20px;align-items:start;}
+.page{max-width:1160px;margin:0 auto;padding:20px 12px 80px;display:grid;grid-template-columns:1fr 1fr 380px;gap:16px;align-items:start;}
 @media(max-width:960px){.page{grid-template-columns:1fr 1fr;}}
-@media(max-width:620px){.page{grid-template-columns:1fr;}}
+@media(max-width:620px){.page{grid-template-columns:1fr;padding:12px 10px 60px;}}
 
 /* ── CARD ── */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh-sm);margin-bottom:16px;transition:background .25s,border-color .25s;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh-sm);margin-bottom:14px;transition:background .25s,border-color .25s;}
 .card:last-child{margin-bottom:0;}
-.card-title{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card-title{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .card-title::after{content:'';flex:1;height:1px;background:var(--border);}
+@media(max-width:480px){.card{padding:14px;}}
 
 /* ── FORM ── */
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:380px){.row2{grid-template-columns:1fr;}}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
 .fg:last-child{margin-bottom:0;}
 .fg-label{display:flex;align-items:center;gap:6px;}
@@ -340,10 +345,10 @@ footer a:hover{color:rgba(255,255,255,.8);}
           <label>Extra Guest Fee</label>
           <span class="tip" data-tip="Some listings charge per guest above a base occupancy (e.g. $25/night per person over 8 guests). Check your listing's fee breakdown.">?</span>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="number" id="extra-guest-fee" placeholder="$/night" min="0" step="1" oninput="calc()" style="flex:1;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <input type="number" id="extra-guest-fee" placeholder="$/night" min="0" step="1" oninput="calc()" style="flex:1;min-width:80px;">
           <span style="font-size:.75rem;color:var(--muted);white-space:nowrap;">above</span>
-          <input type="number" id="extra-guest-threshold" placeholder="guests" value="8" min="1" step="1" oninput="calc()" style="width:80px;">
+          <input type="number" id="extra-guest-threshold" placeholder="guests" value="8" min="1" step="1" oninput="calc()" style="width:70px;min-width:60px;">
         </div>
       </div>
     </div>
