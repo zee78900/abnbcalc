@@ -1,143 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AbnbCalc — True Cost Calculator</title>
-<meta name="description" content="See the real all-in cost of any vacation rental. Toggle Airbnb fees, taxes, pool heating, and more — instantly.">
+<meta name="description" content="See the real all-in cost of any vacation rental. Toggle Airbnb fees, taxes, pool heating, credit card fees, and more — instantly.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f5f6f8;
-  --white:#fff;
-  --border:#e5e7eb;
+  --bg:#f0f2f5;
+  --white:#ffffff;
+  --card:#ffffff;
+  --border:#e2e5ea;
+  --border2:#edf0f4;
   --blue:#2563eb;
   --blue-dk:#1d4ed8;
   --blue-pale:#eff6ff;
+  --blue-border:#bfdbfe;
   --green:#16a34a;
   --amber:#d97706;
   --red:#dc2626;
-  --text:#111827;
-  --sub:#6b7280;
-  --muted:#9ca3af;
+  --text:#0f172a;
+  --sub:#64748b;
+  --muted:#94a3b8;
+  --tog-off:#cbd5e1;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 6px 20px rgba(0,0,0,.06);
   --r:14px;
-  --sh:0 1px 2px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.07);
 }
+[data-theme="dark"]{
+  --bg:#0f1117;
+  --white:#0f1117;
+  --card:#1a1d27;
+  --border:#2a2d3a;
+  --border2:#222530;
+  --blue:#3b82f6;
+  --blue-dk:#60a5fa;
+  --blue-pale:#1e2a45;
+  --blue-border:#1e3a6e;
+  --text:#f1f5f9;
+  --sub:#94a3b8;
+  --muted:#64748b;
+  --tog-off:#374151;
+  --sh:0 2px 8px rgba(0,0,0,.4);
+}
+[data-theme="gray"]{
+  --bg:#1e2128;
+  --white:#1e2128;
+  --card:#272b35;
+  --border:#363b47;
+  --border2:#2e3340;
+  --blue:#60a5fa;
+  --blue-dk:#93c5fd;
+  --blue-pale:#1a2740;
+  --blue-border:#1e3560;
+  --text:#e2e8f0;
+  --sub:#94a3b8;
+  --muted:#64748b;
+  --tog-off:#3f4655;
+  --sh:0 2px 8px rgba(0,0,0,.35);
+}
+
 html{scroll-behavior:smooth;font-size:15px;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.55;min-height:100vh;transition:background .2s,color .2s;}
 
 /* ── HEADER ── */
-header{background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;}
-.hdr{max-width:980px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between;}
-.logo{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;text-decoration:none;color:var(--text);}
+header{background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;position:sticky;top:0;z-index:50;}
+.hdr{max-width:1100px;margin:0 auto;height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.logo{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;text-decoration:none;color:var(--text);flex-shrink:0;}
 .logo em{color:var(--blue);font-style:normal;}
-.tagline{font-size:.72rem;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 10px;border-radius:20px;font-weight:500;}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.theme-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:500;color:var(--sub);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;}
+.theme-btn:hover{border-color:var(--blue);color:var(--blue);}
+.theme-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 
 /* ── HERO ── */
-.hero{text-align:center;padding:40px 20px 28px;}
-.hero h1{font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:700;letter-spacing:-.04em;line-height:1.2;margin-bottom:8px;}
-.hero h1 span{color:var(--blue);}
-.hero p{color:var(--sub);font-size:.92rem;max-width:440px;margin:0 auto;}
+.hero{text-align:center;padding:36px 20px 24px;}
+.hero h1{font-size:clamp(1.45rem,3.2vw,2rem);font-weight:700;letter-spacing:-.04em;line-height:1.2;margin-bottom:8px;}
+.hero h1 em{color:var(--blue);font-style:normal;}
+.hero p{color:var(--sub);font-size:.88rem;max-width:480px;margin:0 auto 14px;}
+.hero-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;}
+.hero-tag{font-size:.72rem;font-weight:500;color:var(--sub);background:var(--card);border:1px solid var(--border);padding:3px 10px;border-radius:20px;}
 
 /* ── LAYOUT ── */
-.page{max-width:980px;margin:0 auto;padding:0 16px 80px;display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;}
-@media(max-width:720px){.page{grid-template-columns:1fr;}}
+.page{max-width:1100px;margin:0 auto;padding:0 16px 80px;display:grid;grid-template-columns:1fr 1fr 360px;gap:16px;align-items:start;}
+@media(max-width:900px){.page{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.page{grid-template-columns:1fr;}}
 
 /* ── CARD ── */
-.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:14px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:14px;transition:background .2s,border-color .2s;}
 .card:last-child{margin-bottom:0;}
-.sec-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* ── FORM ── */
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
 .fg:last-child{margin-bottom:0;}
-.fg label{font-size:.77rem;font-weight:600;color:var(--sub);}
+.fg label{font-size:.74rem;font-weight:600;color:var(--sub);letter-spacing:.01em;}
 .fg input,.fg select{
   border:1.5px solid var(--border);border-radius:9px;
   padding:9px 12px;font-size:.92rem;font-family:inherit;
-  color:var(--text);background:var(--white);
+  color:var(--text);background:var(--card);
   transition:border-color .15s,box-shadow .15s;width:100%;
 }
-.fg input:focus,.fg select:focus{
-  outline:none;border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(37,99,235,.1);
-}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.12);}
 .fg input::placeholder{color:var(--muted);}
 .fg input[type="number"]{-moz-appearance:textfield;}
-.fg input[type="number"]::-webkit-inner-spin-button{opacity:.6;}
+.fg input[type="number"]::-webkit-inner-spin-button{opacity:.5;}
+.fg select option{background:var(--card);}
+
+/* ── NIGHTS PREVIEW ── */
+.nights-preview{background:var(--blue-pale);border:1px solid var(--blue-border);border-radius:9px;padding:10px 14px;display:none;align-items:center;justify-content:space-between;margin-top:-4px;margin-bottom:12px;}
+.np-label{font-size:.8rem;color:var(--blue);font-weight:500;}
+.np-val{font-size:1rem;font-weight:700;color:var(--blue);}
+.np-warn{font-size:.75rem;color:var(--amber);font-weight:500;display:none;}
 
 /* ── RATE INPUT ── */
 .rate-wrap{position:relative;}
-.rate-wrap .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:1rem;font-weight:600;color:var(--sub);pointer-events:none;}
-.rate-wrap input{padding-left:24px;font-size:1.1rem;font-weight:600;color:var(--blue-dk);border-color:#bfdbfe;background:var(--blue-pale);}
+.rate-wrap .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:1.05rem;font-weight:600;color:var(--sub);pointer-events:none;}
+.rate-wrap input{padding-left:24px;font-size:1.15rem;font-weight:700;color:var(--blue-dk);border-color:var(--blue-border);background:var(--blue-pale);}
 .rate-wrap input:focus{border-color:var(--blue);}
-
-/* ── MIN NIGHTS WARNING ── */
-.warn{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px 13px;font-size:.78rem;color:var(--amber);margin-top:-4px;margin-bottom:10px;display:none;font-weight:500;}
+.rate-hint{font-size:.72rem;color:var(--muted);margin-top:5px;}
 
 /* ── TOGGLES ── */
-.tog-list{display:flex;flex-direction:column;gap:0;}
-.tog-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bg);}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);}
 .tog-row:last-child{border-bottom:none;padding-bottom:0;}
 .tog-row:first-child{padding-top:0;}
-.ti{flex:1;min-width:0;}
-.ti-name{font-size:.88rem;font-weight:500;color:var(--text);}
-.ti-sub{font-size:.73rem;color:var(--muted);margin-top:1px;}
+.ti{flex:1;min-width:0;padding-right:12px;}
+.ti-name{font-size:.86rem;font-weight:500;color:var(--text);}
+.ti-sub{font-size:.72rem;color:var(--muted);margin-top:2px;line-height:1.4;}
 .ti-sub input.inline{
-  width:54px;border:1px solid var(--border);border-radius:5px;
+  width:52px;border:1px solid var(--border);border-radius:5px;
   padding:2px 5px;font-size:.78rem;font-family:inherit;
-  color:var(--text);text-align:right;display:inline-block;
-  vertical-align:middle;margin:0 2px;
+  color:var(--text);background:var(--card);text-align:right;
+  display:inline-block;vertical-align:middle;margin:0 2px;
 }
 .ti-sub input.inline:focus{outline:none;border-color:var(--blue);}
 
-/* toggle switch */
-.sw{position:relative;width:40px;height:22px;flex-shrink:0;margin-left:14px;}
+.sw{position:relative;width:40px;height:22px;flex-shrink:0;}
 .sw input{opacity:0;width:0;height:0;position:absolute;}
-.sw .sl{position:absolute;inset:0;background:#d1d5db;border-radius:22px;cursor:pointer;transition:background .18s;}
+.sw .sl{position:absolute;inset:0;background:var(--tog-off);border-radius:22px;cursor:pointer;transition:background .18s;}
 .sw input:checked+.sl{background:var(--blue);}
 .sw .sl:before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .18s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
 .sw input:checked+.sl:before{transform:translateX(18px);}
-.sw input:disabled+.sl{opacity:.4;cursor:not-allowed;}
+.sw input:disabled+.sl{opacity:.35;cursor:not-allowed;}
 
-/* ── RESULTS ── */
-.res-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);position:sticky;top:20px;}
-.res-empty{text-align:center;padding:36px 0 24px;color:var(--muted);}
-.res-empty .icon{font-size:2rem;margin-bottom:10px;opacity:.5;}
-.res-empty p{font-size:.83rem;line-height:1.5;}
+/* ── CC FEE HIGHLIGHT ── */
+.cc-highlight .ti-name{color:var(--amber);}
 
-.disc-note{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:.76rem;font-weight:500;color:#854d0e;margin-bottom:14px;display:none;}
+/* ── RESULTS CARD ── */
+.res-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--sh);position:sticky;top:72px;transition:background .2s,border-color .2s;}
+@media(max-width:900px){.res-card{position:relative;top:0;grid-column:1/-1;}}
 
-.sl{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--bg);}
+.res-empty{text-align:center;padding:28px 8px 20px;}
+.res-empty .icon{font-size:1.8rem;margin-bottom:10px;opacity:.5;}
+.res-empty p{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+/* partial (dates only) */
+.res-partial{display:none;background:var(--blue-pale);border:1px solid var(--blue-border);border-radius:10px;padding:14px;margin-bottom:14px;text-align:center;}
+.res-partial .rp-nights{font-size:1.4rem;font-weight:700;color:var(--blue);}
+.res-partial .rp-label{font-size:.75rem;color:var(--sub);margin-top:2px;}
+.res-partial .rp-hint{font-size:.72rem;color:var(--muted);margin-top:6px;}
+
+.disc-note{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:.76rem;font-weight:500;color:#854d0e;margin-bottom:12px;display:none;}
+[data-theme="dark"] .disc-note,[data-theme="gray"] .disc-note{background:#2a2400;border-color:#5a4a00;color:#fbbf24;}
+
+.sl{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border2);}
 .sl:last-of-type{border-bottom:none;}
-.sl-l{font-size:.83rem;color:var(--sub);line-height:1.3;}
-.sl-l small{display:block;font-size:.7rem;color:var(--muted);}
-.sl-v{font-size:.88rem;font-weight:600;color:var(--text);white-space:nowrap;margin-left:8px;}
-.sl.tot{border-top:2px solid var(--border);margin-top:6px;padding-top:14px;border-bottom:none;}
-.sl.tot .sl-l{font-size:.92rem;font-weight:700;color:var(--text);}
-.sl.tot .sl-v{font-size:1.25rem;font-weight:700;color:var(--blue);}
+.sl-l{font-size:.81rem;color:var(--sub);line-height:1.3;flex:1;}
+.sl-l small{display:block;font-size:.68rem;color:var(--muted);margin-top:1px;}
+.sl-v{font-size:.86rem;font-weight:600;color:var(--text);white-space:nowrap;margin-left:8px;}
+.sl.tot{border-top:2px solid var(--border);margin-top:8px;padding-top:12px;border-bottom:none;}
+.sl.tot .sl-l{font-size:.9rem;font-weight:700;color:var(--text);}
+.sl.tot .sl-v{font-size:1.2rem;font-weight:700;color:var(--blue);}
+.per-night-all{text-align:center;font-size:.72rem;color:var(--muted);margin-top:4px;margin-bottom:14px;}
 
-.per-night{text-align:center;font-size:.73rem;color:var(--muted);margin-top:4px;margin-bottom:14px;}
+/* cc fee warning */
+.cc-suggestion{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px 13px;font-size:.76rem;color:var(--amber);margin-bottom:12px;display:none;font-weight:500;line-height:1.5;}
+[data-theme="dark"] .cc-suggestion,[data-theme="gray"] .cc-suggestion{background:#2a1800;border-color:#7c3a00;color:#fb923c;}
 
 /* ── SHARE ── */
-.share{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
-.share h4{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:10px;}
+.share{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.share h4{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;}
 .share-btns{display:flex;gap:8px;}
-.sh-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 12px;border-radius:8px;font-size:.82rem;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;border:none;transition:all .15s;}
+.sh-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 10px;border-radius:8px;font-size:.8rem;font-weight:600;font-family:inherit;cursor:pointer;text-decoration:none;border:none;transition:all .15s;}
 .sh-wa{background:#25d366;color:#fff;}
 .sh-wa:hover{background:#1db954;}
 .sh-copy{background:var(--bg);color:var(--text);border:1px solid var(--border);}
-.sh-copy:hover{background:#e9eaec;}
-
-.disclaimer{font-size:.7rem;color:var(--muted);margin-top:12px;line-height:1.5;text-align:center;}
+.sh-copy:hover{filter:brightness(.95);}
+.disclaimer{font-size:.68rem;color:var(--muted);margin-top:10px;line-height:1.5;text-align:center;}
 
 /* ── FOOTER ── */
-footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);border-top:1px solid var(--border);}
+footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);border-top:1px solid var(--border);background:var(--card);}
 footer a{color:var(--sub);text-decoration:none;}
+footer a:hover{color:var(--blue);}
+
+/* col span helpers */
+.col-span-2{grid-column:span 2;}
+@media(max-width:600px){.col-span-2{grid-column:span 1;}}
 </style>
 </head>
 <body>
@@ -145,55 +207,74 @@ footer a{color:var(--sub);text-decoration:none;}
 <header>
   <div class="hdr">
     <a class="logo" href="/">abnb<em>calc</em>.com</a>
-    <span class="tagline">Vacation Rental Cost Calculator</span>
+    <div class="hdr-right">
+      <button class="theme-btn active" id="btn-light" onclick="setTheme('light')">☀ Light</button>
+      <button class="theme-btn" id="btn-gray" onclick="setTheme('gray')">◑ Gray</button>
+      <button class="theme-btn" id="btn-dark" onclick="setTheme('dark')">◗ Dark</button>
+    </div>
   </div>
 </header>
 
 <div class="hero">
-  <h1>What does this rental <span>really cost?</span></h1>
-  <p>Enter your dates and rate — see every fee, tax, and add-on totaled up instantly.</p>
+  <h1>What does this rental <em>actually</em> cost?</h1>
+  <p>Enter your dates and nightly rate — every fee, tax, and add-on totaled up in real time.</p>
+  <div class="hero-tags">
+    <span class="hero-tag">✓ Airbnb fee toggle</span>
+    <span class="hero-tag">✓ Pool heating</span>
+    <span class="hero-tag">✓ FL tourist tax</span>
+    <span class="hero-tag">✓ Credit card fee</span>
+    <span class="hero-tag">✓ Direct booking savings</span>
+    <span class="hero-tag">✓ Long-stay discounts</span>
+  </div>
 </div>
 
 <div class="page">
 
-  <!-- ── LEFT COLUMN ── -->
+  <!-- COL 1 -->
   <div>
 
-    <!-- 1. DATES -->
+    <!-- DATES -->
     <div class="card">
       <div class="sec-label">Your Stay</div>
       <div class="row2">
         <div class="fg"><label>Check-In</label><input type="date" id="ci" onchange="calc()"></div>
         <div class="fg"><label>Check-Out</label><input type="date" id="co" onchange="calc()"></div>
       </div>
-      <div class="warn" id="min-warn"></div>
+
+      <!-- Nights preview — shows as soon as dates are picked -->
+      <div class="nights-preview" id="nights-preview">
+        <span class="np-label">📅 Stay length</span>
+        <span class="np-val" id="np-val">—</span>
+      </div>
+      <div class="np-warn" id="np-warn"></div>
+
       <div class="fg" style="margin-bottom:0">
         <label>Minimum Nights for This Listing</label>
         <input type="number" id="min-nights" value="4" min="1" step="1" oninput="calc()">
       </div>
     </div>
 
-    <!-- 2. PROPERTY & GROUP -->
+    <!-- PROPERTY & GROUP -->
     <div class="card">
       <div class="sec-label">Property &amp; Group</div>
       <div class="fg">
         <label>Property Type</label>
         <select id="br" onchange="calc()">
-          <optgroup label="Condos">
+          <optgroup label="— Condos —">
             <option value="studio">Studio / 1 BR Condo</option>
             <option value="condo2">2 BR Condo</option>
             <option value="condo3">3 BR Condo</option>
           </optgroup>
-          <optgroup label="Townhomes">
+          <optgroup label="— Townhomes —">
             <option value="town4">4 BR Townhome</option>
             <option value="town5">5 BR Townhome</option>
           </optgroup>
-          <optgroup label="Villas">
-            <option value="villa5">5–6 BR Villa</option>
-            <option value="villa7" selected>7–8 BR Villa</option>
-            <option value="villa9">9–10 BR Villa</option>
+          <optgroup label="— Villas —">
+            <option value="villa56">5–6 BR Villa</option>
+            <option value="villa78" selected>7–8 BR Villa</option>
+            <option value="villa910">9–10 BR Villa</option>
           </optgroup>
-          <optgroup label="Large Estates">
+          <optgroup label="— Large Estates —">
             <option value="estate11">11–12 BR Estate</option>
             <option value="estate13">13+ BR Estate / Resort Home</option>
           </optgroup>
@@ -205,7 +286,12 @@ footer a{color:var(--sub);text-decoration:none;}
       </div>
     </div>
 
-    <!-- 3. RATE -->
+  </div>
+
+  <!-- COL 2 -->
+  <div>
+
+    <!-- NIGHTLY RATE -->
     <div class="card">
       <div class="sec-label">Nightly Rate</div>
       <div class="fg" style="margin-bottom:0">
@@ -214,86 +300,103 @@ footer a{color:var(--sub);text-decoration:none;}
           <span class="prefix">$</span>
           <input type="number" id="rate" placeholder="e.g. 450" min="1" step="1" oninput="calc()">
         </div>
+        <div class="rate-hint">Enter the base nightly rate shown on the listing — before fees.</div>
       </div>
     </div>
 
-    <!-- 4. FEES -->
+    <!-- FEES -->
     <div class="card">
       <div class="sec-label">Fees &amp; Add-Ons</div>
-      <div class="tog-list">
 
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Cleaning Fee</div>
-            <div class="ti-sub">One-time &nbsp;·&nbsp; $<input class="inline" type="number" id="cleaning" value="250" min="0" step="1" oninput="calc()"> flat</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="use-cleaning" checked onchange="calc()"><span class="sl"></span></label>
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Cleaning Fee</div>
+          <div class="ti-sub">One-time flat fee &nbsp;·&nbsp; $<input class="inline" type="number" id="cleaning" value="250" min="0" step="1" oninput="calc()"></div>
         </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Airbnb Service Fee</div>
-            <div class="ti-sub">~14% of nightly + cleaning + add-ons</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="airbnb" checked onchange="calc()"><span class="sl"></span></label>
-        </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Booking Direct</div>
-            <div class="ti-sub">Removes Airbnb fee — saves ~14%</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="direct" onchange="togDirect()"><span class="sl"></span></label>
-        </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Pool / Spa Heating</div>
-            <div class="ti-sub">$<input class="inline" type="number" id="pool-rate" value="35" min="0" step="1" oninput="calc()"> per night</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="pool" onchange="calc()"><span class="sl"></span></label>
-        </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Tourist Development Tax</div>
-            <div class="ti-sub">6% on nightly only · FL counties</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="tdt" checked onchange="calc()"><span class="sl"></span></label>
-        </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Sales Tax</div>
-            <div class="ti-sub"><input class="inline" type="number" id="tax-rate" value="7.5" min="0" max="20" step="0.1" oninput="calc()">% on all charges</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="sales" checked onchange="calc()"><span class="sl"></span></label>
-        </div>
-
-        <div class="tog-row">
-          <div class="ti">
-            <div class="ti-name">Long-Stay Discount</div>
-            <div class="ti-sub">14+ nights: −5% &nbsp;·&nbsp; 21+ nights: −10% on nightly</div>
-          </div>
-          <label class="sw"><input type="checkbox" id="discount" checked onchange="calc()"><span class="sl"></span></label>
-        </div>
-
+        <label class="sw"><input type="checkbox" id="use-cleaning" checked onchange="calc()"><span class="sl"></span></label>
       </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Pool / Spa Heating</div>
+          <div class="ti-sub">$<input class="inline" type="number" id="pool-rate" value="35" min="0" step="1" oninput="calc()"> per night</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="pool" onchange="calc()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Airbnb Service Fee</div>
+          <div class="ti-sub">~14% of nightly + cleaning + add-ons</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="airbnb" checked onchange="calc()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Booking Direct</div>
+          <div class="ti-sub">Removes Airbnb fee — saves ~14%</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="direct" onchange="togDirect()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Tourist Development Tax</div>
+          <div class="ti-sub">6% on nightly only — FL counties</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="tdt" checked onchange="calc()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Sales Tax</div>
+          <div class="ti-sub"><input class="inline" type="number" id="tax-rate" value="7.5" min="0" max="25" step="0.1" oninput="calc()">% on all charges</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="sales" checked onchange="calc()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row">
+        <div class="ti">
+          <div class="ti-name">Long-Stay Discount</div>
+          <div class="ti-sub">14+ nights: −5% &nbsp;·&nbsp; 21+ nights: −10% on nightly</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="discount" checked onchange="calc()"><span class="sl"></span></label>
+      </div>
+
+      <div class="tog-row cc-highlight">
+        <div class="ti">
+          <div class="ti-name">💳 Credit Card Processing Fee</div>
+          <div class="ti-sub"><input class="inline" type="number" id="cc-rate" value="3.5" min="0" max="10" step="0.1" oninput="calc()">% — applied to total before this fee</div>
+        </div>
+        <label class="sw"><input type="checkbox" id="cc" onchange="calc()"><span class="sl"></span></label>
+      </div>
+
     </div>
 
   </div>
 
-  <!-- ── RIGHT: RESULTS ── -->
-  <div class="res-card">
+  <!-- COL 3: RESULTS -->
+  <div class="res-card" id="res-card">
     <div class="sec-label">Your Estimate</div>
 
+    <!-- Empty state -->
     <div class="res-empty" id="empty-state">
       <div class="icon">🗓</div>
-      <p>Enter your check-in &amp; check-out dates and the nightly rate to see a full breakdown.</p>
+      <p>Select your check-in &amp; check-out dates, then enter the nightly rate to see a full cost breakdown.</p>
     </div>
 
+    <!-- Partial: dates picked, no rate yet -->
+    <div class="res-partial" id="partial-state">
+      <div class="rp-nights" id="rp-nights"></div>
+      <div class="rp-label">nights selected</div>
+      <div class="rp-hint">Enter the nightly rate above to see the full estimate ↑</div>
+    </div>
+
+    <!-- Full results -->
     <div id="results" style="display:none">
       <div class="disc-note" id="disc-note"></div>
+      <div class="cc-suggestion" id="cc-suggestion">💳 This booking exceeds $6,000 — consider toggling on the Credit Card Processing Fee if paying by card.</div>
 
       <div class="sl"><span class="sl-l">Nights</span><span class="sl-v" id="r-nights"></span></div>
       <div class="sl"><span class="sl-l">Nightly Rate</span><span class="sl-v" id="r-rate"></span></div>
@@ -303,12 +406,13 @@ footer a{color:var(--sub);text-decoration:none;}
       <div class="sl" id="r-tdt-row"><span class="sl-l">Tourist Dev. Tax<small>6% on nightly · FL</small></span><span class="sl-v" id="r-tdt"></span></div>
       <div class="sl" id="r-sales-row"><span class="sl-l">Sales Tax<small id="r-tax-lbl"></small></span><span class="sl-v" id="r-sales"></span></div>
       <div class="sl" id="r-ab-row"><span class="sl-l">Airbnb Service Fee<small>~14%</small></span><span class="sl-v" id="r-ab"></span></div>
+      <div class="sl" id="r-cc-row"><span class="sl-l">CC Processing Fee<small id="r-cc-lbl"></small></span><span class="sl-v" id="r-cc"></span></div>
 
       <div class="sl tot">
         <span class="sl-l">Estimated Total</span>
         <span class="sl-v" id="r-tot"></span>
       </div>
-      <div class="per-night" id="r-ppn"></div>
+      <div class="per-night-all" id="r-ppn"></div>
 
       <div class="share">
         <h4>Share Estimate</h4>
@@ -323,45 +427,74 @@ footer a{color:var(--sub);text-decoration:none;}
 
 </div>
 
-<footer>abnbcalc.com &nbsp;·&nbsp; <a href="mailto:info@abnbcalc.com">contact</a></footer>
+<footer>
+  <p>abnbcalc.com &nbsp;·&nbsp; Know the real cost before you book &nbsp;·&nbsp; <a href="mailto:info@abnbcalc.com">contact</a></p>
+</footer>
 
 <script>
+// ── THEME
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  ['light','gray','dark'].forEach(function(x){
+    document.getElementById('btn-'+x).classList.toggle('active',x===t);
+  });
+  localStorage.setItem('abnbcalc-theme',t);
+}
+(function(){ var t=localStorage.getItem('abnbcalc-theme')||'light'; setTheme(t); })();
+
+// ── HELPERS
 var CD = {};
 function el(id){ return document.getElementById(id); }
-function fmt(n){ return '$' + Math.round(n).toLocaleString(); }
+function fmt(n){ return '$'+Math.round(n).toLocaleString(); }
+function show(id,v){ el(id).style.display=v?'flex':'none'; }
 function parseDate(str){ var p=str.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
 
 function togDirect(){
-  var d = el('direct').checked;
-  el('airbnb').checked  = !d;
-  el('airbnb').disabled = d;
+  var d=el('direct').checked;
+  el('airbnb').checked=!d; el('airbnb').disabled=d;
   calc();
 }
 
-function show(id, visible){ el(id).style.display = visible ? 'flex' : 'none'; }
-
 function calc(){
-  var ci = el('ci').value, co = el('co').value;
-  var warn = el('min-warn');
-  warn.style.display = 'none';
+  var ci=el('ci').value, co=el('co').value;
+  var minN=parseInt(el('min-nights').value)||1;
 
-  if(!ci || !co){ el('empty-state').style.display=''; el('results').style.display='none'; return; }
-  var d1 = parseDate(ci), d2 = parseDate(co);
-  var nights = Math.round((d2-d1)/864e5);
-  if(nights <= 0 || isNaN(nights)){ el('empty-state').style.display=''; el('results').style.display='none'; return; }
+  // Reset all states
+  el('empty-state').style.display='none';
+  el('partial-state').style.display='none';
+  el('results').style.display='none';
+  el('nights-preview').style.display='none';
+  el('np-warn').style.display='none';
 
-  var baseRate = parseFloat(el('rate').value);
-  if(!baseRate || baseRate <= 0){ el('empty-state').style.display=''; el('results').style.display='none'; return; }
+  // No dates — show empty
+  if(!ci||!co){ el('empty-state').style.display=''; return; }
 
-  var minN = parseInt(el('min-nights').value) || 1;
-  if(nights < minN){
-    warn.textContent = '⚠ This listing requires a minimum of ' + minN + ' nights — you selected ' + nights + '.';
-    warn.style.display = 'block';
+  var d1=parseDate(ci), d2=parseDate(co);
+  var nights=Math.round((d2-d1)/864e5);
+  if(nights<=0||isNaN(nights)){ el('empty-state').style.display=''; return; }
+
+  // Show nights preview immediately
+  el('nights-preview').style.display='flex';
+  el('np-val').textContent=nights+' night'+(nights===1?'':'s');
+
+  if(nights<minN){
+    el('np-warn').textContent='⚠ Minimum is '+minN+' nights for this listing.';
+    el('np-warn').style.display='block';
   }
 
-  var cleaningAmt = parseFloat(el('cleaning').value) || 0;
-  var poolPerNight = parseFloat(el('pool-rate').value) || 0;
-  var taxPct = parseFloat(el('tax-rate').value) || 0;
+  // No rate yet — show partial
+  var baseRate=parseFloat(el('rate').value);
+  if(!baseRate||baseRate<=0){
+    el('partial-state').style.display='';
+    el('rp-nights').textContent=nights;
+    return;
+  }
+
+  // Full calc
+  var cleaningAmt = parseFloat(el('cleaning').value)||0;
+  var poolPerNight= parseFloat(el('pool-rate').value)||0;
+  var taxPct      = parseFloat(el('tax-rate').value)||0;
+  var ccPct       = parseFloat(el('cc-rate').value)||0;
 
   var useCleaning = el('use-cleaning').checked;
   var useAirbnb   = el('airbnb').checked;
@@ -370,73 +503,82 @@ function calc(){
   var useTDT      = el('tdt').checked;
   var useSales    = el('sales').checked;
   var useDiscount = el('discount').checked;
+  var useCC       = el('cc').checked;
 
-  var disc = 0;
-  if(useDiscount){ if(nights>=21) disc=10; else if(nights>=14) disc=5; }
-  var nightly = disc ? Math.round(baseRate*(1-disc/100)) : baseRate;
+  var disc=0;
+  if(useDiscount){ if(nights>=21)disc=10; else if(nights>=14)disc=5; }
+  var nightly=disc?Math.round(baseRate*(1-disc/100)):baseRate;
 
-  var nightSub  = nightly * nights;
-  var cleaning  = useCleaning ? cleaningAmt : 0;
-  var poolSub   = usePool ? poolPerNight * nights : 0;
-  var taxBase   = nightSub + cleaning + poolSub;
-  var tdt       = useTDT   ? Math.round(nightSub * 0.06) : 0;
-  var sales     = useSales ? Math.round(taxBase * taxPct/100) : 0;
-  var airbnb    = (useAirbnb && !isDirect) ? Math.round(taxBase * 0.14) : 0;
-  var total     = nightSub + cleaning + poolSub + tdt + sales + airbnb;
+  var nightSub = nightly*nights;
+  var cleaning = useCleaning?cleaningAmt:0;
+  var poolSub  = usePool?poolPerNight*nights:0;
+  var taxBase  = nightSub+cleaning+poolSub;
+  var tdt      = useTDT  ?Math.round(nightSub*0.06):0;
+  var sales    = useSales?Math.round(taxBase*taxPct/100):0;
+  var airbnb   = (useAirbnb&&!isDirect)?Math.round(taxBase*0.14):0;
+  var subtotalBeforeCC = nightSub+cleaning+poolSub+tdt+sales+airbnb;
+  var cc       = useCC?Math.round(subtotalBeforeCC*ccPct/100):0;
+  var total    = subtotalBeforeCC+cc;
 
-  el('empty-state').style.display = 'none';
-  el('results').style.display = '';
+  el('results').style.display='';
 
-  el('r-nights').textContent = nights + ' night' + (nights===1?'':'s');
+  el('r-nights').textContent = nights+' night'+(nights===1?'':'s');
   el('r-rate').textContent   = fmt(nightly)+'/night'+(disc?' (−'+disc+'%)':'');
   el('r-sub').textContent    = fmt(nightSub);
-  el('r-ppn').textContent    = '≈ ' + fmt(total/nights) + ' per night all-in';
+  el('r-tot').textContent    = fmt(total);
+  el('r-ppn').textContent    = '≈ '+fmt(total/nights)+' per night, all-in';
 
-  show('r-pool-row', usePool);
-  if(usePool) el('r-pool').textContent = fmt(poolSub);
+  show('r-pool-row',usePool);
+  if(usePool) el('r-pool').textContent=fmt(poolSub);
 
-  show('r-clean-row', useCleaning);
-  if(useCleaning) el('r-clean').textContent = fmt(cleaning);
+  show('r-clean-row',useCleaning);
+  if(useCleaning) el('r-clean').textContent=fmt(cleaning);
 
-  show('r-tdt-row', useTDT);
-  if(useTDT) el('r-tdt').textContent = '~'+fmt(tdt);
+  show('r-tdt-row',useTDT);
+  if(useTDT) el('r-tdt').textContent='~'+fmt(tdt);
 
-  show('r-sales-row', useSales);
+  show('r-sales-row',useSales);
   if(useSales){ el('r-sales').textContent='~'+fmt(sales); el('r-tax-lbl').textContent=taxPct+'% on all charges'; }
 
-  show('r-ab-row', useAirbnb && !isDirect);
-  if(useAirbnb && !isDirect) el('r-ab').textContent = '~'+fmt(airbnb);
+  show('r-ab-row',useAirbnb&&!isDirect);
+  if(useAirbnb&&!isDirect) el('r-ab').textContent='~'+fmt(airbnb);
 
-  el('r-tot').textContent = fmt(total);
+  show('r-cc-row',useCC);
+  if(useCC){ el('r-cc').textContent='~'+fmt(cc); el('r-cc-lbl').textContent=ccPct+'% on subtotal'; }
 
-  var dn = el('disc-note');
-  if(disc){ dn.textContent = (disc===10?'🎉 21+ night discount applied — ':'🎉 14+ night discount applied — ')+'−'+disc+'% off nightly rate'; dn.style.display='block'; }
+  // Disc badge
+  var dn=el('disc-note');
+  if(disc){ dn.textContent=(disc===10?'🎉 21+ night discount: ':'🎉 14+ night discount: ')+'−'+disc+'% off nightly rate'; dn.style.display='block'; }
   else dn.style.display='none';
 
+  // CC suggestion: show if total > $6000 and CC not already on
+  var ccSug=el('cc-suggestion');
+  ccSug.style.display=(subtotalBeforeCC>=6000&&!useCC)?'block':'none';
+
   var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  CD = { nights,nightly,baseRate,nightSub,cleaning,poolSub,usePool,
+  CD={nights,nightly,baseRate,nightSub,cleaning,poolSub,usePool,
     tdt,useTDT,sales,useSales,taxPct,airbnb,useAirbnb,isDirect,
-    total,disc,
+    cc,useCC,ccPct,total,disc,
     ci2:months[d1.getMonth()]+' '+d1.getDate()+', '+d1.getFullYear(),
     co2:months[d2.getMonth()]+' '+d2.getDate()+', '+d2.getFullYear(),
-    adults:el('adults').value, children:el('children').value,
-    propType:el('br').options[el('br').selectedIndex].text
-  };
+    adults:el('adults').value,children:el('children').value,
+    propType:el('br').options[el('br').selectedIndex].text};
 }
 
 function buildMsg(){
-  var d=CD; if(!d.total) return '';
+  var d=CD; if(!d.total)return'';
   var m='🏠 *Vacation Rental Estimate*\n';
   m+='📅 '+d.ci2+' → '+d.co2+' ('+d.nights+' nights)\n';
   m+='👥 '+d.adults+' adult'+(d.adults==1?'':'s')+(+d.children>0?' + '+d.children+' child'+(d.children==1?'':'ren'):'')+'\n';
   m+='🏡 '+d.propType+'\n\n';
   m+='• Nightly: $'+d.nightly.toLocaleString()+'/night'+(d.disc?' (−'+d.disc+'%)':'')+'\n';
   m+='• Nightly Subtotal: $'+d.nightSub.toLocaleString()+'\n';
-  if(d.usePool)    m+='• Pool Heating: ~$'+d.poolSub.toLocaleString()+'\n';
-  if(d.cleaning)   m+='• Cleaning: $'+d.cleaning.toLocaleString()+'\n';
-  if(d.useTDT)     m+='• Tourist Dev. Tax (6%): ~$'+d.tdt.toLocaleString()+'\n';
-  if(d.useSales)   m+='• Sales Tax ('+d.taxPct+'%): ~$'+d.sales.toLocaleString()+'\n';
+  if(d.usePool)           m+='• Pool Heating: ~$'+d.poolSub.toLocaleString()+'\n';
+  if(d.cleaning)          m+='• Cleaning: $'+d.cleaning.toLocaleString()+'\n';
+  if(d.useTDT)            m+='• Tourist Dev. Tax (6%): ~$'+d.tdt.toLocaleString()+'\n';
+  if(d.useSales)          m+='• Sales Tax ('+d.taxPct+'%): ~$'+d.sales.toLocaleString()+'\n';
   if(d.useAirbnb&&!d.isDirect) m+='• Airbnb Fee (~14%): ~$'+d.airbnb.toLocaleString()+'\n';
+  if(d.useCC)             m+='• CC Processing Fee ('+d.ccPct+'%): ~$'+d.cc.toLocaleString()+'\n';
   m+='\n💰 *Est. Total: ~$'+d.total.toLocaleString()+'*\n';
   m+='📊 ≈ $'+(Math.round(d.total/d.nights)).toLocaleString()+'/night all-in\n';
   m+='\nEstimate only — exact fees confirmed at booking.\nabnbcalc.com';
